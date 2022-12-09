@@ -1,0 +1,29 @@
+<div class="select-list-container" id="workList-select-list-{{idParent}}">
+  <mat-form-field id="form-field-{{idParent}}" *ngIf="!isReadOnly">
+    <mat-label id="field-label-{{idParent}}">{{fieldLabel}}</mat-label>
+    <mat-chip-list #choiceList aria-label="Value selection" [disabled]="isDisable">
+      <mat-chip *ngFor="let entry of selections; let i = index" id="select-list-{{i}}-chip-{{idParent}}" [value]="entry"
+        [removable]="true" [selectable]="false" (removed)="remove(entry)">
+        <div class="truncate-ellipsis" id="chip-label-{{i}}-{{idParent}}">
+          {{entry.label}}
+        </div>
+        <mat-icon matChipRemove id="select-list-{{i}}-chip-cancel-{{idParent}}">cancel</mat-icon>
+      </mat-chip>
+      <input #choiceInput matInput id="select-list-input-{{idParent}}" #acTrigger="matAutocompleteTrigger"
+             [matChipInputFor]="choiceList" [readonly]="!multiSelect && selections.length > 0"
+             [formControl]="formControl" [matAutocomplete]="auto" [matChipInputAddOnBlur]="false"
+             [maxLength]="!!fieldCharLimit ? fieldCharLimit : 524288" (matChipInputTokenEnd)="add($event)"
+             [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (keyup)="onKey($event)" (paste)="onPaste($event)"
+             (focus)="onFocus()" (blur)="addOnBlur($event)" />
+    </mat-chip-list>
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)"
+      id="select-list-auto-complete-{{idParent}}" >
+      <mat-option *ngFor="let option of filteredChoices$ | async; let i = index" id="option-{{i}}-{{idParent}}"
+        [value]="option" class="select-list-options">
+        <span class="truncate-ellipsis" id="option-{{i}}-label-{{idParent}}">{{option.label}}</span>
+        <span *ngIf="showName" class="truncate-ellipsis">{{option.name}}</span>
+      </mat-option>
+    </mat-autocomplete>
+    <mat-error>Please enter a unique name</mat-error>
+  </mat-form-field>
+</div>

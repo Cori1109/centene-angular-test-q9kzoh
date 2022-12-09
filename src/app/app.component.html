@@ -1,0 +1,9 @@
+<form [formGroup]="form">
+  <h1>Cocktail Finder</h1>
+  <lib-select-list
+    fieldLabel="Select a drink"
+    formControlName="drink"
+    [choices]="choices"
+    (searchValueChange)="onValueChange($event)"
+  ></lib-select-list>
+</form>
